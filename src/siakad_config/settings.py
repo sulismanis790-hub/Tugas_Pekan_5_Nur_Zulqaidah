@@ -12,8 +12,12 @@ from pathlib import Path
 from typing import Optional
 
 
-def load_env_file(filepath: str = ".env") -> None:
+def load_env_file(filepath: Optional[str] = ".env") -> None:
     """Helper sederhana untuk memuat berkas .env ke os.environ jika belum diset"""
+    # PERBAIKAN: Jika filepath None atau kosong, langsung keluar tanpa eror
+    if not filepath:
+        return
+
     env_path = Path(filepath)
     if not env_path.exists():
         return
@@ -47,7 +51,7 @@ class AppSettings:
     wa_auth_token: str
 
     @classmethod
-    def load_from_env(cls, env_file: str = ".env") -> "AppSettings":
+    def load_from_env(cls, env_file: Optional[str] = ".env") -> "AppSettings":
         # 1. Muat berkas .env jika ada
         load_env_file(env_file)
 

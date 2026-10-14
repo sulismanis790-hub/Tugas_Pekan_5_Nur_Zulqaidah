@@ -35,7 +35,7 @@ class TestConfigAndBilling(unittest.TestCase):
         os.environ["DATABASE_URL"] = "postgresql://user:pass@localhost/db"
         os.environ["PAYMENT_API_KEY"] = "prod_secret_token_123"
 
-        config = AppSettings.load_from_env()
+        config = AppSettings.load_from_env(env_file=None)
 
         self.assertEqual(config.app_env, "production")
         self.assertEqual(config.app_port, 9000)
@@ -49,7 +49,7 @@ class TestConfigAndBilling(unittest.TestCase):
         os.environ["PAYMENT_API_KEY"] = "token_abc"
 
         with self.assertRaises(ValueError) as ctx:
-            AppSettings.load_from_env()
+            AppSettings.load_from_env(env_file=None)
 
         self.assertIn("DATABASE_URL", str(ctx.exception))
 
@@ -60,7 +60,7 @@ class TestConfigAndBilling(unittest.TestCase):
         os.environ["PAYMENT_API_KEY"] = "token_abc"
 
         with self.assertRaises(ValueError) as ctx:
-            AppSettings.load_from_env()
+            AppSettings.load_from_env(env_file=None)
 
         self.assertIn("APP_PORT", str(ctx.exception))
 
